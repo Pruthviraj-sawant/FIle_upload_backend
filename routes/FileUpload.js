@@ -15,7 +15,9 @@ const express = require("express");
 const router = express.Router();
 
 // const { localFileUpload } = require("../controllers/fileupload");
-const  {fileupload, imageupload}  = require("../controllers/fileUpload");
+const  {fileupload, imageupload,videoupload ,imagreducedeupload}  = require("../controllers/fileUpload");
 router.post("/localFileUpload",  fileupload);
 router.post("/imageupload",imageupload);
+router.post("/videoUpload", videoupload);
+router.post("/redudcedimage",imagreducedeupload);
 module.exports = router;
