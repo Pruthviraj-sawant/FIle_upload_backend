@@ -1,6 +1,6 @@
 // const mongoose = require("mongoose");
-// const nodemailer = require("nodemailer");
-
+const nodemailer = require("nodemailer");
+// const transporter =require("../config/nodemail");
 // const fileSchema = new mongoose.Schema({
 //     name: {
 //         type: String,
@@ -17,7 +17,7 @@
 //     }
 // });
 
-// require("dotenv").config();
+require("dotenv").config();
 
 // fileSchema.post("save", async function (doc) {
 //     try {
@@ -72,6 +72,49 @@ email:{
 
 
 });
+exports.fileschema = fileschema;
+
+
+
+//middleware 
+
+fileschema.post("save",async function (doc) {
+    try {
+
+console.log("doc:",doc);
+
+
+let transporter= nodemailer.createTransport({
+
+    host: process.env.MAIL_HOST,
+                auth: {
+                    user: process.env.MAIL_USER,
+                    pass: process.env.MAIL_PASS
+                },
+});
+
+
+let info=await transporter.sendMail({
+    from:"pruthviraj sawant",
+    to:doc.email,
+    subject:"file uploaded to cloudniary",
+    html:`<h2>heloo ji <a href=${doc.imageurl}>${doc.imageurl}</a></h2>`
+
+})
+
+console.log(info);
+
+        
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+
+
+
+
+
 
 const file=mongoose.model("file",fileschema);
 module.exports=file;
